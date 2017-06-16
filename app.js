@@ -79,6 +79,7 @@ bot.dialog('accounts',[
     function(session, results){
         switch (results.response.index) {
             case 0:
+<<<<<<< HEAD
                 var msg = new builder.Message(session).addAttachment(createMasterAccountCard(session));
                 session.send(msg);
                  session.beginDialog('accounts')
@@ -98,6 +99,22 @@ bot.dialog('accounts',[
                 session.send(msg);
                  session.beginDialog('accounts')
                 break;                                 
+=======
+                session.beginDialog('ChangingBrushhead')
+                break;
+            case 1:
+                session.beginDialog('BrushingTechniques')
+                break;
+            case 2:
+                session.beginDialog('Brushingwithapp')
+                break;
+            case 3:
+                session.beginDialog('BrushingwithoutApp')
+                break;
+            case 4: 
+                session.beginDialog('Orderbrushhead')
+                break;
+>>>>>>> 97316b50eaccfd6e9348858573806e0452773331
             default:
                 session.send(prompts.exitMsg)
                 session.endDialog();
@@ -135,6 +152,7 @@ function modifyAccountCard(session) {
         ]);
 }
 
+<<<<<<< HEAD
 function deleteProfileCard(session) {
     return new builder.HeroCard(session)
         .title('Deleting a profile')
@@ -143,4 +161,72 @@ function deleteProfileCard(session) {
         .images([
             builder.CardImage.create(session, 'http://help.kolibree.com/wp-content/uploads/2016/05/4.6.1-1024x720.png')
         ]);
+=======
+bot.dialog('ChangingBrushhead',[
+    (session)=>
+    {
+    var image = "http://help.kolibree.com/wp-content/uploads/2016/05/3.1.1-1024x429.png";
+    var message = "Kolibree brush heads are easily interchangeable so each member of the family can use the same toothbrush, by simply changing the brush head at the appropriate time. To change brush heads: 1. Unlock the brush head by turning it counterclockwise until the two indicators are lined up.2. Pull the brush head upward to remove it from the handle.3. Replace with a new brush head by lining up the indicators.4. Turn the brush clockwise until it locks.";
+    var card = createHeroCard(image,message,session);
+
+    var msg = new builder.Message(session).addAttachment(card);
+    session.send(msg);
+    session.beginDialog('SolvedQuestion');
+}]);
+bot.dialog('SolvedQuestion',[//This will be used to ask the user if the question was solved
+    (session)=>
+    {  
+         builder.Prompts.choice(session,"Did that solve your problem","Yes|No", {listStyle:3});
+    },
+function(session, results){
+        switch (results.response.index) {
+            case 0:
+                session.beginDialog('Solved')
+                break;
+            case 1:
+                session.beginDialog('NotSolved')
+                break;
+            default:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+        }}
+]);
+
+bot.dialog('Solved',[
+    (session)=>
+    {
+        builder.Prompts.choice(session, "Do you have any other questions","Yes|No", {listStyle:3});
+    },
+    function(session, results){
+        switch (results.response.index) {
+            case 0:
+                session.beginDialog('help')
+                break;
+            case 1:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+            default:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+        }}
+]);
+
+
+function createHeroCard(URL,message,session) {
+    return new builder.HeroCard(session)
+        //.title('BotFramework Hero Card')
+       // .subtitle('Your bots — wherever your users are talking')
+        .text(message)
+        .images([
+            builder.CardImage.create(session, URL)
+        ])
+      //  .buttons([
+        //    builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework', 'Get Started')
+
+        //]);
+>>>>>>> 97316b50eaccfd6e9348858573806e0452773331
 }
+
