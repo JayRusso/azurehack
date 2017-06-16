@@ -55,5 +55,18 @@ bot.dialog('help',[
     (session)=>
     {
         builder.Prompts.choice(session, "what do you want to search?", "Brushing|Accounts", {listStyle:3})
-    }
+    },
+    function(session, results){
+        switch (results.response.index) {
+            case 0:
+                session.beginDialog('brushing')
+                break;
+            case 1:
+                session.beginDialog('Accounts')
+                break;
+            default:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+        }}
 ]).triggerAction({matches: /^help/i})
