@@ -62,7 +62,7 @@ bot.dialog('help',[
                 session.beginDialog('brushing')
                 break;
             case 1:
-                session.beginDialog('Accounts')
+                session.beginDialog('accounts')
                 break;
             default:
                 session.send(prompts.exitMsg)
@@ -71,44 +71,76 @@ bot.dialog('help',[
         }}
 ]).triggerAction({matches: /^help/i})
 
-bot.dialog('brushing',[
+bot.dialog('accounts',[
     (session)=>
     {
-        builder.Prompts.choice(session, "I see your having an issue with brushing. Can you be more specific, select one one of the following", "Changing brushhead|Brushing techniques|Brushing with app|Brushing without App|Order brushhead", {listStyle:3})
+        builder.Prompts.choice(session, "Ok, I can help with your account... What would you like to do with your account?", "Creating a master account|Adding users|Modifying account information|Deleting a profile", {listStyle:3})
     },
     function(session, results){
         switch (results.response.index) {
             case 0:
-                session.beginDialog('Changing Brushhead')
+                var msg = new builder.Message(session).addAttachment(createMasterAccountCard(session));
+                session.send(msg);
+                 session.beginDialog('accounts')
                 break;
             case 1:
-                session.beginDialog('Brushing Techniques')
-                break;
+                var msg = new builder.Message(session).addAttachment(addUserCard(session));
+                session.send(msg);
+                 session.beginDialog('accounts')
+                break; 
             case 2:
-                session.beginDialog('Brushing with app')
-                break;
+                var msg = new builder.Message(session).addAttachment(modifyAccountCard(session));
+                session.send(msg);
+                 session.beginDialog('accounts')
+                break; 
             case 3:
-                session.beginDialog('Brushing without App')
-                break;
-            case 4: 
-                session.beginDialog('Order brushhead')
-                break;
+                var msg = new builder.Message(session).addAttachment(deleteProfileCard(session));
+                session.send(msg);
+                 session.beginDialog('accounts')
+                break;                                 
             default:
                 session.send(prompts.exitMsg)
                 session.endDialog();
                 break;
         }}
-]).triggerAction({matches: /^help/i})
+]).triggerAction({matches: /^accounts/i})
 
-function createHeroCard(session) {
+function createMasterAccountCard(session) {
     return new builder.HeroCard(session)
-        .title('BotFramework Hero Card')
-        .subtitle('Your bots — wherever your users are talking')
-        .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
+        .title('Creating the master account')
+        .subtitle('Creating the master account is easy...')
+        .text('If you are connecting for the first time, you will automatically be asked to create a user profile. This is the master profile that will manage your other family members’ profiles if you add them. Only the user associated with the master account can change the password and manage the other profiles linked to this account.')
         .images([
-            builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
-        ])
-        .buttons([
-            builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework', 'Get Started')
+            builder.CardImage.create(session, 'http://help.kolibree.com/wp-content/uploads/2016/05/4.2.1-1024x720.png')
+        ]);
+}
+
+function addUserCard(session) {
+    return new builder.HeroCard(session)
+        .title('Adding users')
+        .subtitle('Adding users is easy...')
+        .text('After the master account has been created, it is possible to add user profiles, for example for each family member. To do this, in the list of profiles, add a profile, and then follow the steps to create a new profile.')
+        .images([
+            builder.CardImage.create(session, 'http://help.kolibree.com/wp-content/uploads/2016/05/4.4.1-1024x720.png')
+        ]);
+}
+
+function modifyAccountCard(session) {
+    return new builder.HeroCard(session)
+        .title('Modifying account or user information')
+        .subtitle('Modifying account or user information is easy...')
+        .text('Each Kolibree user can change the information in their profile. To change profile information go to the “Settings” menu in the application and then choose “Profiles”. Choose the profile photo at the top of the screen by swiping left or the right until you get to the profile that you want to change.')
+        .images([
+            builder.CardImage.create(session, 'http://help.kolibree.com/wp-content/uploads/2016/05/4.5.1-1024x720.png')
+        ]);
+}
+
+function deleteProfileCard(session) {
+    return new builder.HeroCard(session)
+        .title('Deleting a profile')
+        .subtitle('Deleting a profile is easy...')
+        .text('Go to “Settings” and then “Profiles”. Choose the profile photo at the top of the screen by swiping left or the right until until you get to the profile you want to delete. At the bottom, select “Delete profile”.')
+        .images([
+            builder.CardImage.create(session, 'http://help.kolibree.com/wp-content/uploads/2016/05/4.6.1-1024x720.png')
         ]);
 }
