@@ -79,42 +79,25 @@ bot.dialog('accounts',[
     function(session, results){
         switch (results.response.index) {
             case 0:
-<<<<<<< HEAD
                 var msg = new builder.Message(session).addAttachment(createMasterAccountCard(session));
                 session.send(msg);
-                 session.beginDialog('accounts')
+                session.beginDialog('SolvedQuestion');
                 break;
             case 1:
                 var msg = new builder.Message(session).addAttachment(addUserCard(session));
                 session.send(msg);
-                 session.beginDialog('accounts')
+                session.beginDialog('SolvedQuestion');
                 break; 
             case 2:
                 var msg = new builder.Message(session).addAttachment(modifyAccountCard(session));
                 session.send(msg);
-                 session.beginDialog('accounts')
+                session.beginDialog('SolvedQuestion');
                 break; 
             case 3:
                 var msg = new builder.Message(session).addAttachment(deleteProfileCard(session));
                 session.send(msg);
-                 session.beginDialog('accounts')
+                session.beginDialog('SolvedQuestion');
                 break;                                 
-=======
-                session.beginDialog('ChangingBrushhead')
-                break;
-            case 1:
-                session.beginDialog('BrushingTechniques')
-                break;
-            case 2:
-                session.beginDialog('Brushingwithapp')
-                break;
-            case 3:
-                session.beginDialog('BrushingwithoutApp')
-                break;
-            case 4: 
-                session.beginDialog('Orderbrushhead')
-                break;
->>>>>>> 97316b50eaccfd6e9348858573806e0452773331
             default:
                 session.send(prompts.exitMsg)
                 session.endDialog();
@@ -152,7 +135,6 @@ function modifyAccountCard(session) {
         ]);
 }
 
-<<<<<<< HEAD
 function deleteProfileCard(session) {
     return new builder.HeroCard(session)
         .title('Deleting a profile')
@@ -161,7 +143,7 @@ function deleteProfileCard(session) {
         .images([
             builder.CardImage.create(session, 'http://help.kolibree.com/wp-content/uploads/2016/05/4.6.1-1024x720.png')
         ]);
-=======
+}
 bot.dialog('ChangingBrushhead',[
     (session)=>
     {
@@ -227,6 +209,5 @@ function createHeroCard(URL,message,session) {
         //    builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework', 'Get Started')
 
         //]);
->>>>>>> 97316b50eaccfd6e9348858573806e0452773331
 }
 
