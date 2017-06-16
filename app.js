@@ -111,6 +111,19 @@ bot.dialog('ChangingBrushhead',[
     session.send(msg);
     session.beginDialog('SolvedQuestion');
 }]);
+
+bot.dialog('BrushingTechniques',[
+    (session)=>
+    {
+    var image = "http://help.kolibree.com/wp-content/uploads/2016/05/Capture-d%E2%80%99e%CC%81cran-2016-05-13-a%CC%80-18.07.13-1024x329.png";    
+    var message = "It is recommended to brush teeth twice a day, in the morning and evening, for 2 minutes each time.  If you follow this recommendation, you will ensure optimal dental health.";
+    var card = createHeroCard(image,message,session);
+
+    var msg = new builder.Message(session).addAttachment(card); 
+    session.send(msg);
+    session.beginDialog('SolvedQuestion');
+}]);
+
 bot.dialog('SolvedQuestion',[//This will be used to ask the user if the question was solved
     (session)=>
     {  
