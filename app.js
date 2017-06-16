@@ -79,19 +79,19 @@ bot.dialog('brushing',[
     function(session, results){
         switch (results.response.index) {
             case 0:
-                session.beginDialog('Changing Brushhead')
+                session.beginDialog('ChangingBrushhead')
                 break;
             case 1:
-                session.beginDialog('Brushing Techniques')
+                session.beginDialog('BrushingTechniques')
                 break;
             case 2:
-                session.beginDialog('Brushing with app')
+                session.beginDialog('Brushingwithapp')
                 break;
             case 3:
-                session.beginDialog('Brushing without App')
+                session.beginDialog('BrushingwithoutApp')
                 break;
             case 4: 
-                session.beginDialog('Order brushhead')
+                session.beginDialog('Orderbrushhead')
                 break;
             default:
                 session.send(prompts.exitMsg)
@@ -100,15 +100,70 @@ bot.dialog('brushing',[
         }}
 ]).triggerAction({matches: /^help/i})
 
-function createHeroCard(session) {
+bot.dialog('ChangingBrushhead',[
+    (session)=>
+    {
+    var image = "http://help.kolibree.com/wp-content/uploads/2016/05/3.1.1-1024x429.png";
+    var message = "Kolibree brush heads are easily interchangeable so each member of the family can use the same toothbrush, by simply changing the brush head at the appropriate time. To change brush heads: 1. Unlock the brush head by turning it counterclockwise until the two indicators are lined up.2. Pull the brush head upward to remove it from the handle.3. Replace with a new brush head by lining up the indicators.4. Turn the brush clockwise until it locks.";
+    var card = createHeroCard(image,message,session);
+
+    var msg = new builder.Message(session).addAttachment(card);
+    session.send(msg);
+    session.beginDialog('SolvedQuestion');
+}]);
+bot.dialog('SolvedQuestion',[//This will be used to ask the user if the question was solved
+    (session)=>
+    {  
+         builder.Prompts.choice(session,"Did that solve your problem","Yes|No", {listStyle:3});
+    },
+function(session, results){
+        switch (results.response.index) {
+            case 0:
+                session.beginDialog('Solved')
+                break;
+            case 1:
+                session.beginDialog('NotSolved')
+                break;
+            default:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+        }}
+]);
+
+bot.dialog('Solved',[
+    (session)=>
+    {
+        builder.Prompts.choice(session, "Do you have any other questions","Yes|No", {listStyle:3});
+    },
+    function(session, results){
+        switch (results.response.index) {
+            case 0:
+                session.beginDialog('help')
+                break;
+            case 1:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+            default:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+        }}
+]);
+
+
+function createHeroCard(URL,message,session) {
     return new builder.HeroCard(session)
-        .title('BotFramework Hero Card')
-        .subtitle('Your bots — wherever your users are talking')
-        .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
+        //.title('BotFramework Hero Card')
+       // .subtitle('Your bots — wherever your users are talking')
+        .text(message)
         .images([
-            builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
+            builder.CardImage.create(session, URL)
         ])
-        .buttons([
-            builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework', 'Get Started')
-        ]);
+      //  .buttons([
+        //    builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework', 'Get Started')
+
+        //]);
 }
+
