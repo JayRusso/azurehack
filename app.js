@@ -69,7 +69,36 @@ bot.dialog('help',[
                 session.endDialog();
                 break;
         }}
-]).triggerAction({matches: /^help/i})
+]).triggerAction({matches: /^help/i});
+
+bot.dialog('brushing',[
+    (session)=>
+    {
+        builder.Prompts.choice(session, "I see your having an issue with brushing. Can you be more specific, select one one of the following", "Changing brushhead|Brushing techniques|Brushing with app|Brushing without App|Order brushhead", {listStyle:3})
+    },
+    function(session, results){
+        switch (results.response.index) {
+            case 0:
+                session.beginDialog('ChangingBrushhead')
+                break;
+            case 1:
+                session.beginDialog('BrushingTechniques')
+                break;
+            case 2:
+                session.beginDialog('Brushingwithapp')
+                break;
+            case 3:
+                session.beginDialog('BrushingwithoutApp')
+                break;
+            case 4: 
+                session.beginDialog('Orderbrushhead')
+                break;
+            default:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+        }}
+]).triggerAction({matches: /^brushing/i})
 
 bot.dialog('accounts',[
     (session)=>
@@ -208,6 +237,14 @@ bot.dialog('Solved',[
                 break;
         }}
 ]);
+
+bot.dialog('NotSolved',
+    (session)=>
+        {
+            session.send("Please visit http://help.kolibree.com/ for more help.");
+            session.beginDialog('Solved');
+        }
+)
 
 
 function createHeroCard(URL,message,session) {
