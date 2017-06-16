@@ -70,3 +70,32 @@ bot.dialog('help',[
                 break;
         }}
 ]).triggerAction({matches: /^help/i})
+
+bot.dialog('brushing',[
+    (session)=>
+    {
+        builder.Prompts.choice(session, "I see your having an issue with brushing. Can you be more specific, select one one of the following", "Changing brushhead|Brushing techniques|Brushing with app|Brushing without App|Order brushhead", {listStyle:3})
+    },
+    function(session, results){
+        switch (results.response.index) {
+            case 0:
+                session.beginDialog('Changing Brushhead')
+                break;
+            case 1:
+                session.beginDialog('Brushing Techniques')
+                break;
+            case 2:
+                session.beginDialog('Brushing with app')
+                break;
+            case 3:
+                session.beginDialog('Brushing without App')
+                break;
+            case 4: 
+                session.beginDialog('Order brushhead')
+                break;
+            default:
+                session.send(prompts.exitMsg)
+                session.endDialog();
+                break;
+        }}
+]).triggerAction({matches: /^help/i})
